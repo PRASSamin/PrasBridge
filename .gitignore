@@ -1,0 +1,43 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env
+.env.*
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Test and coverage reports
+.coverage
+*.cover
+nosetests.xml
+coverage.xml
+*.log
+*.pot
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Other files
+*.DS_Store
+*.egg
+*.egg-info
+
+# PyCharm specific files
+.idea/
