@@ -1,12 +1,12 @@
-# PrasBridge
+[![PrasBridge](./static/parbridge-full-purple-tp.svg)](https://github.com/PRASSamin/PrasBridge)
 
 ## About
+
 **PrasBridge is a powerful Python package that seamlessly integrates Django and SQLAlchemy, providing enhanced form handling, serialization capabilities, and utility functions for building robust web applications.**
 
 [![PyPI version](https://badge.fury.io/py/PrasBridge.svg)](https://badge.fury.io/py/PrasBridge)
 [![Python Versions](https://img.shields.io/pypi/pyversions/PrasBridge.svg)](https://pypi.org/project/PrasBridge/)
 [![License](https://img.shields.io/pypi/l/PrasBridge.svg)](https://pypi.org/project/PrasBridge/)
-
 
 ## Features
 
@@ -56,7 +56,7 @@ from pras.models import PrasBase, BaseUser
 
 class User(BaseUser):
     __tablename__ = 'users'
-    
+
     # Additional fields can be added here
     ...
 ```
@@ -69,7 +69,7 @@ from pras.forms import CharField, EmailField, RegistrationForm
 class CustomRegistrationForm(RegistrationForm):
     bio = CharField(max_length=500, required=False)
     website = CharField(max_length=200, required=False)
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(model=User, *args, **kwargs)
 ```
@@ -89,18 +89,25 @@ class CustomRegistrationForm(RegistrationForm):
 ```
 
 ## Detailed Features
+
 ---
+
 ### Base Models
+
 **PrasBridge provides robust base models designed to streamline essential fields for various classes, supporting extensibility and ease of use in applications.**
 
 #### `PrasBase`
+
 `PrasBase` is a foundational model for any entity that requires automatic tracking of creation and modification timestamps. It includes the following fields:
+
 - `id:` Auto-generated primary key for unique identification of each instance.
 - `created_at:` Automatically stores the date and time the instance was created.
 - `updated_at:` Tracks the date and time of the most recent update to the instance.
 
 #### `BaseUser`
+
 `BaseUser` builds on PrasBase and provides a structured template for user models. It includes essential fields for managing user accounts and permissions:
+
 - `username:` Unique identifier for each user.
 - `first_name:` User’s first name.
 - `last_name:` User’s last name.
@@ -114,8 +121,8 @@ class CustomRegistrationForm(RegistrationForm):
 
 These fields make `BaseUser` an ideal base for user authentication and authorization in applications, with built-in fields for permissions and user management.
 
-
 ##### Example
+
 ```python
 from pras import PrasBase, BaseUser
 
@@ -139,6 +146,7 @@ class Book(PrasBase):
 ```
 
 ##### Notes
+
 - `Flexibility:` Both `PrasBase` and `BaseUser` provide a flexible base structure that you can extend to suit specific application needs.
 - `Consistency:` Utilizing these models ensures that essential fields like `created_at` and `updated_at` are consistently applied across your application.
 - `Customizability:` By inheriting from these bases, additional fields can be seamlessly added to create tailored entities.
@@ -146,6 +154,7 @@ class Book(PrasBase):
 ---
 
 ### Enhanced Form Fields
+
 **PrasBridge provides a suite of enhanced form fields with customizable options for common field types, including:**
 
 - `CharField`
@@ -155,8 +164,11 @@ class Book(PrasBase):
 - `CheckboxField`
 - `DateField`
 - `IntegerField`
+
 ---
+
 #### Common Arguments
+
 **These arguments apply to all PrasBridge form fields, providing flexible customization for events, accessibility, and styling:**
 
 - **Events:** `onclick`, `onfocus`, `onblur`, `onchange` – JavaScript functions for handling user interactions.
@@ -164,142 +176,171 @@ class Book(PrasBase):
 - **Styling and Classes:** `classes`, `style`, `id` – Options to add CSS classes, inline styles, and set a unique ID.
 - **Display Options:** `label`, `label_suffix`, `help_text` – Control label visibility, label suffix, and help text for field hints.
 - **Field-Specific Options:** `initial`, `value`, `show_hidden_initial`, `localize`, `validators`, `data_attrs`, `aria_attrs` – Set initial values, localize content, and add custom validation and data attributes.
+
 ---
 
 #### Field Types
+
 Each field type in PrasBridge includes arguments that are commonly defined using Django's attrs dictionary for widgets. PrasBridge fields offer these as direct arguments for ease of use.
 
 ---
 
 ##### CharField and EmailField
+
 **`CharField` and `EmailField` allow direct assignment of common attributes without defining them within `attrs={}`.**
+
 - **Arguments**
-    - `type (CharField only):` Field type, such as "text", "email", or "password".
-    - `placeholder:` Placeholder text within the field.
-    - `max_length / min_length:` Constraints on the length of input.
-    - `title:` Tooltip text.
-    - `size:` Size of the input field.
-    - `strip:` Strips whitespace if True.
-    - `empty_value:` Value if the field is empty.
+
+  - `type (CharField only):` Field type, such as "text", "email", or "password".
+  - `placeholder:` Placeholder text within the field.
+  - `max_length / min_length:` Constraints on the length of input.
+  - `title:` Tooltip text.
+  - `size:` Size of the input field.
+  - `strip:` Strips whitespace if True.
+  - `empty_value:` Value if the field is empty.
 
 - **Note**
-    - `type` argument is only for CharField
-    - `CharField` can be set to `email` type, `EmailField` offers enhanced validation and error handling for email input.
+
+  - `type` argument is only for CharField
+  - `CharField` can be set to `email` type, `EmailField` offers enhanced validation and error handling for email input.
 
 - **Example**
-    ```python
-    from pras.forms.fields import CharField, EmailField
 
-    class MyForm(forms.Form):
-        name = CharField(
-            type="text",  # text, email, or password
-            placeholder="Enter your name",
-            required=True,
-            ...
-        )
-        email = EmailField(
-            placeholder="Enter your email",
-            ...
-        )
-    ```
+  ```python
+  from pras.forms.fields import CharField, EmailField
+
+  class MyForm(forms.Form):
+      name = CharField(
+          type="text",  # text, email, or password
+          placeholder="Enter your name",
+          required=True,
+          ...
+      )
+      email = EmailField(
+          placeholder="Enter your email",
+          ...
+      )
+  ```
 
 ---
 
 ##### TextAreaField
+
 **PRAS’s `TextAreaField` streamlines attribute customization, bypassing the need for `attrs={}`.**
+
 - **Arguments**
-    - `rows / cols:` Set the dimensions of the text area.
-    - `placeholder:` Placeholder text for the field.
-    - `max_length / min_length:` Limits on text length.
-    - `size:` Size of the field.
-    - `strip:` Strips whitespace if True.
-    - `empty_value:` Value if the field is empty.
+
+  - `rows / cols:` Set the dimensions of the text area.
+  - `placeholder:` Placeholder text for the field.
+  - `max_length / min_length:` Limits on text length.
+  - `size:` Size of the field.
+  - `strip:` Strips whitespace if True.
+  - `empty_value:` Value if the field is empty.
 
 - **Example**
-    ```python
-    from pras.forms.fields import TextAreaField
 
-    class MyForm(forms.Form):
-        bio = TextAreaField(
-            rows=4,
-            cols=50
-            ...
-        )
-    ```
+  ```python
+  from pras.forms.fields import TextAreaField
+
+  class MyForm(forms.Form):
+      bio = TextAreaField(
+          rows=4,
+          cols=50
+          ...
+      )
+  ```
+
 ---
 
 ##### ChoiceField
+
 **ChoiceField supports predefined options without needing a widget definition.**
 
 - **Arguments**
-    - `choices:` List of tuple pairs representing value-label options.
+
+  - `choices:` List of tuple pairs representing value-label options.
 
 - **Example**
-    ```python
-    from pras.forms.fields import ChoiceField
 
-    class MyForm(forms.Form):
-        gender = ChoiceField(
-            choices=[('Male', 'Male'), ('Female', 'Female')],
-            ...
-            )
-    ```
+  ```python
+  from pras.forms.fields import ChoiceField
+
+  class MyForm(forms.Form):
+      gender = ChoiceField(
+          choices=[('Male', 'Male'), ('Female', 'Female')],
+          ...
+          )
+  ```
 
 ---
 
 ##### CheckboxField
+
 **PRAS’s CheckboxField allows easy configuration of checked status.**
+
 - **Arguments**
-    - `checked:` Boolean, if True, checkbox appears selected.
+
+  - `checked:` Boolean, if True, checkbox appears selected.
 
 - **Example**
-    ```python
-    from pras.forms.fields import CheckboxField
 
-    class MyForm(forms.Form):
-        agree = CheckboxField(
-            checked=True,
-            ...
-        )
-    ```
+  ```python
+  from pras.forms.fields import CheckboxField
+
+  class MyForm(forms.Form):
+      agree = CheckboxField(
+          checked=True,
+          ...
+      )
+  ```
+
 ---
 
 ##### DateField
+
 **DateField supports date input with optional format validation.**
+
 - **Arguments**
-    - `input_formats:` List of accepted date formats for validation.
+
+  - `input_formats:` List of accepted date formats for validation.
 
 - **Example**
-    ```python
-    from pras.forms.fields import DateField
 
-    class MyForm(forms.Form):
-        birthdate = DateField(
-            input_formats=["%Y-%m-%d"],
-            ...
-        )
-    ```
+  ```python
+  from pras.forms.fields import DateField
+
+  class MyForm(forms.Form):
+      birthdate = DateField(
+          input_formats=["%Y-%m-%d"],
+          ...
+      )
+  ```
 
 ##### IntegerField
+
 **IntegerField provides constraints and step control for numeric inputs.**
+
 - **Arguments**
-    - `min_value / max_value:` Limits for accepted values.
-    - `step:` Increment step size
+
+  - `min_value / max_value:` Limits for accepted values.
+  - `step:` Increment step size
 
 - **Example**
-    ```python
-    from pras.forms.fields import IntegerField
 
-    class MyForm(forms.Form):
-        age = IntegerField(
-            min_value=18,
-            max_value=100,
-            step=1,
-            ...
-        )
-    ```
+  ```python
+  from pras.forms.fields import IntegerField
+
+  class MyForm(forms.Form):
+      age = IntegerField(
+          min_value=18,
+          max_value=100,
+          step=1,
+          ...
+      )
+  ```
 
 ### Built-in Forms
+
 **PrasBridge Provides built-in forms for common authentication and registration.**
 
 - **AuthenticationForm**
@@ -310,11 +351,12 @@ These forms handle the save functionality after cleaning and validating user inp
 ---
 
 #### Example
+
 ```python
 # forms.py
 from pras.forms import AuthenticationForm, RegistrationForm
 from pras.forms.fields import CharField
-from .models import User  
+from .models import User
 
 # Extending the AuthenticationForm
 class MyAuthenticationForm(AuthenticationForm):
@@ -331,7 +373,7 @@ class MyAuthenticationForm(AuthenticationForm):
 
 # views.py
 from .forms import MyAuthenticationForm
-from .models import User 
+from .models import User
 from pras.forms import AuthenticationForm
 
 def login(request):
@@ -353,11 +395,13 @@ def login(request):
 ```
 
 #### Note
+
 - **The same usage applies for `RegistrationForm` as it does for `AuthenticationForm`:** Both forms require a valid user model to utilize the save functionality, whether you’re using them directly or extending them.
 
 - **Best Practice for Extending Forms:** When extending `AuthenticationForm`, `RegistrationForm`, or any other form within PRAS, it’s recommended to use the form fields provided by PrasBridge (`CharField`, `EmailField`, etc.) rather than Django’s built-in fields. These PrasBridge fields offer enhanced functionality with common arguments that streamline the configuration of attributes, keeping the implementation consistent with the PrasBridge other features. Additionally, PrasBridge’s fields are essential for compatibility with other PrasBridge-specific features, such as custom tags, ensuring seamless integration and 100% compatibility across all functionalities.
 
 ---
+
 ### Serialization
 
 **PrasBridge provides flexible serialization options for your models:**
@@ -374,6 +418,7 @@ def login(request):
   - `!field_name`: Excludes the specified field from serialization. For example, use `!password` to exclude the password field.
 
 ##### Example
+
 ```python
 from pras.models import BaseUser
 
@@ -385,11 +430,11 @@ class User(BaseUser):
     class PRAS_AllInfo:
         __identifier__ = 'allinfo'
         fields = ['__all__']  # Returns all data of the model
-    
+
     class PRAS_UsernameInfo:
         __identifier__ = 'specific'
         fields = ['username']  # Returns only the username field data
-    
+
     class PRAS_ExcludeInfo:
         __identifier__ = 'exclude'
         fields = ['!password']  # Returns all data except the password field
@@ -403,13 +448,14 @@ exclude_info = user.to_dict('exclude')       # All data except password
 
 - **Serializing Related Models**: To serialize related models, define a serialization pattern for related fields. For instance, if a model has a field `user = relationship(User)`, you need to specify the fields you wish to include.
 
-    - **Supported Patterns**:
+  - **Supported Patterns**:
 
-        - `__all__`: Include all fields of the related model.
-        - `!field_name`: Exclude specified fields.
-        - `field_name`: Include only that specific field.
+    - `__all__`: Include all fields of the related model.
+    - `!field_name`: Exclude specified fields.
+    - `field_name`: Include only that specific field.
 
 ##### Example
+
 ```python
 from pras.models import PrasBase, BaseUser
 
@@ -437,6 +483,7 @@ book_info = book.to_dict('bookinfo')  # Serializes book data along with specifie
 ```
 
 ##### Serializing Without `PrasBase` or `BaseUser`
+
 While `PrasBase` and `BaseUser` are designed for seamless integration with PrasBridge serialization features with SQLAlchemy, you can enable serialization for models that don’t use them by implementing the following:
 
 ```python
@@ -454,15 +501,19 @@ class MyModel(Base, PrasSerializer):  # Inherit Base and PrasSerializer
         __identifier__ = 'bookinfo'
         fields = ['__all__']
 ```
+
 ##### Note
+
 - The preferred approach is to use `PrasBase` and `BaseUser` to ensure smooth integration with PRAS’s functionality. However, if you choose to use other base classes, you must manually enable the serialization feature with the above method.
 
 ---
+
 ### Session Management
 
 **PRASAlchemy provides efficient session management with automatic transaction handling for SQLAlchemy sessions:**
 
 #### Key Concepts
+
 - **`session_scope`**: A context manager that facilitates automatic transaction handling for SQLAlchemy sessions. It commits the session if no exceptions occur and rolls back the transaction if an exception is raised.
 - **`get_session`**: Returns a new session object for database operations.
 - **`close`**: Closes the specified session.
@@ -470,6 +521,7 @@ class MyModel(Base, PrasSerializer):  # Inherit Base and PrasSerializer
 #### Usage
 
 ##### Using the Context Manager
+
 ```python
 from pras.session import SQLAlchemySessionManager
 
@@ -480,7 +532,9 @@ with session_manager.session_scope() as session:
     user.email = "new@email.com"
     # Automatically commits if no exception occurs; rolls back if an exception occurs.
 ```
+
 ###### `Manual Session Management`
+
 ```python
 from pras.session import SQLAlchemySessionManager
 
@@ -492,11 +546,13 @@ try:
     session.commit()  # Explicitly commit the session
 except Exception as e:
     session.rollback()  # Rollback on exception
-    raise e  
+    raise e
 finally:
     session_manager.close(session)  # Ensure the session is closed
 ```
+
 ---
+
 ### Tokenization
 
 **PrasBridge provides robust tokenization features for generating secure tokens and user-friendly slugs.**
@@ -505,14 +561,15 @@ finally:
 
 ##### `make_token`
 
-| **Argument** | **Type** | **Required** | **Default** | **Description** |
-|--------------|----------|--------------|-------------|------------------|
-| `length`     | `int`    | `False`      | `32`        | The length of the generated token. |
-| `numb`       | `bool`   | `False`      | `True`      | Include numbers in the token. |
+| **Argument** | **Type** | **Required** | **Default** | **Description**                         |
+| ------------ | -------- | ------------ | ----------- | --------------------------------------- |
+| `length`     | `int`    | `False`      | `32`        | The length of the generated token.      |
+| `numb`       | `bool`   | `False`      | `True`      | Include numbers in the token.           |
 | `lower`      | `bool`   | `False`      | `True`      | Include lowercase letters in the token. |
 | `upper`      | `bool`   | `False`      | `True`      | Include uppercase letters in the token. |
 
 ##### Example
+
 ```python
 from pras.hashers import make_token
 
@@ -523,20 +580,23 @@ print(token)  # Example output: 'aBcDeFgHiJ'
 ```
 
 #### Slug Generation
+
 ##### `slugify`
-| **Argument** | **type** | **Required** | **Default** | **Description** |
-| --- | --- | --- | --- | --- |
-| `title` | `str` | `True` | `None` | The title to be slugified. |
-| `rand` | `bool` | `False` | `False` | Add random string to the slug. |
-| `rand_len` | `int` | `False` | `10` | Length of random string. |
-| `dt` | `bool` | `False` | `False` | Include current datetime in the slug. |
-| `ms` | `bool` | `False` | `False` | Include milliseconds in the slug. |
-| `structure` | `str` | `False` | `'title-rand'` | Structure of the slug (order of elements). |
-| `sep` | `str` | `False` | `'-'` | Separator used in the slug. |
-| `case` | `bool` | `False` | `False` | Preserve the original case of the `title`; if `False`, convert to lowercase. |
-| `spchar` | `bool` | `False` | `False` | Include special characters in the slug. |
+
+| **Argument** | **type** | **Required** | **Default**    | **Description**                                                              |
+| ------------ | -------- | ------------ | -------------- | ---------------------------------------------------------------------------- |
+| `title`      | `str`    | `True`       | `None`         | The title to be slugified.                                                   |
+| `rand`       | `bool`   | `False`      | `False`        | Add random string to the slug.                                               |
+| `rand_len`   | `int`    | `False`      | `10`           | Length of random string.                                                     |
+| `dt`         | `bool`   | `False`      | `False`        | Include current datetime in the slug.                                        |
+| `ms`         | `bool`   | `False`      | `False`        | Include milliseconds in the slug.                                            |
+| `structure`  | `str`    | `False`      | `'title-rand'` | Structure of the slug (order of elements).                                   |
+| `sep`        | `str`    | `False`      | `'-'`          | Separator used in the slug.                                                  |
+| `case`       | `bool`   | `False`      | `False`        | Preserve the original case of the `title`; if `False`, convert to lowercase. |
+| `spchar`     | `bool`   | `False`      | `False`        | Include special characters in the slug.                                      |
 
 ##### Example
+
 ```python
 from pras.hashers import slugify
 
@@ -558,41 +618,43 @@ slug = slugify(
 
 print(slug)  # Example output: 'My-Blog-Post-20241028-142837-KtFf1-RFAAa-1730104117955'
 ```
+
 ---
+
 ### Template Tags
 
 **PrasBridge provides a set of template tags to easily render forms and input fields with customizable options.**
-
 
 #### `pInput`
 
 Renders a specific input field with customizable options.
 
-| **Attribute**   | **Type** | **Expected**   | **Required** | **Default** | **Description** |
-|------------------|----------|----------------|--------------|-------------|------------------|
-| `field_name`     | `str`    | `any`          | `True`       | `None`      | The name of the form field. |
-| `form`           | `Form`   | `any`          | `False`      | `form`      | The form instance where the input field is stored. |
-| `html`           | `str`    | `any`          | `False`      | `None`      | Custom HTML code to render in the label tag. |
-| `Class`          | `str`    | `any`          | `False`      | `None`      | CSS class for the main container. |
-| `style`          | `str`    | `any`          | `False`      | `None`      | CSS styles for the input field. |
-| `LabelClass`     | `str`    | `any`          | `False`      | `None`      | CSS class for the label tag. |
-| `InputClass`     | `str`    | `any`          | `False`      | `None`      | CSS class for the input field. |
-| `ErrorClass`     | `str`    | `any`          | `False`      | `None`      | CSS class for the error message. |
-| `label`          | `bool`   | `true or false`| `False`      | `true`      | Whether to render the label. |
-| `error`          | `bool`   | `true or false`| `False`      | `true`      | Whether to render the error message. |
-| `defaultEv`      | `bool`   | `true or false`| `False`      | `true`      | Disable default behaviors if set to `False`. |
-| `placeholder`     | `str`    | `any`          | `False`      | `None`      | Placeholder text for the input field. |
-| `LabelText`      | `str`    | `any`          | `False`      | `None`      | Text to be displayed in the label. |
-| `defaultValue`   | `str`    | `any`          | `False`      | `None`      | Default value for the input field. |
+| **Attribute**  | **Type** | **Expected**    | **Required** | **Default** | **Description**                                    |
+| -------------- | -------- | --------------- | ------------ | ----------- | -------------------------------------------------- |
+| `field_name`   | `str`    | `any`           | `True`       | `None`      | The name of the form field.                        |
+| `form`         | `Form`   | `any`           | `False`      | `form`      | The form instance where the input field is stored. |
+| `html`         | `str`    | `any`           | `False`      | `None`      | Custom HTML code to render in the label tag.       |
+| `Class`        | `str`    | `any`           | `False`      | `None`      | CSS class for the main container.                  |
+| `style`        | `str`    | `any`           | `False`      | `None`      | CSS styles for the input field.                    |
+| `LabelClass`   | `str`    | `any`           | `False`      | `None`      | CSS class for the label tag.                       |
+| `InputClass`   | `str`    | `any`           | `False`      | `None`      | CSS class for the input field.                     |
+| `ErrorClass`   | `str`    | `any`           | `False`      | `None`      | CSS class for the error message.                   |
+| `label`        | `bool`   | `true or false` | `False`      | `true`      | Whether to render the label.                       |
+| `error`        | `bool`   | `true or false` | `False`      | `true`      | Whether to render the error message.               |
+| `defaultEv`    | `bool`   | `true or false` | `False`      | `true`      | Disable default behaviors if set to `False`.       |
+| `placeholder`  | `str`    | `any`           | `False`      | `None`      | Placeholder text for the input field.              |
+| `LabelText`    | `str`    | `any`           | `False`      | `None`      | Text to be displayed in the label.                 |
+| `defaultValue` | `str`    | `any`           | `False`      | `None`      | Default value for the input field.                 |
 
 ##### Example
+
 ```django
 <!-- Load the PrasBridge template tags -->
 {% load pras %}
 
 <!-- Render an input field for email -->
 {% pInput "email" -> field_name
-    form="form" 
+    form="form"
     Class="wrapper-class"
     InputClass="input-class"
     LabelClass="label-class"
@@ -605,6 +667,7 @@ Renders a specific input field with customizable options.
 ```
 
 ##### `pForm`
+
 Renders the complete form with customizable options.
 | **Attribute** | **Type** | **Expected** | **Required** | **Default** | **Description** |
 | --- | --- | --- | --- | --- | --- |
@@ -624,12 +687,13 @@ Renders the complete form with customizable options.
 | `defaultEv` | `bool` | `true or false` | `False` | `true` | Disable default behaviors if set to `False` |
 
 ##### Example
+
 ```django
 <!-- Load the PrasBridge template tags -->
 {% load pras %}
 
 <!-- Render a complete form -->
-{% pForm "form" 
+{% pForm "form"
     method="post"
     action="/submit"
     Class="form-wrapper"
@@ -640,7 +704,9 @@ Renders the complete form with customizable options.
 %}
 
 ```
+
 ##### Note
+
 - To leverage the full functionality of these tags, it is recommended to use PrasBridge-provided form fields, as they synchronize more efficiently with PrasBridge template tags. While Django form fields are supported, using PrasBridge fields allows for greater customization and compatibility.
 
 ---
@@ -663,6 +729,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Support
 
 If you encounter any problems or have questions, please:
+
 1. Check the documentation
 2. Open an issue on GitHub
 3. Contact the maintainers
